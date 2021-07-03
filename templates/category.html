@@ -4,28 +4,58 @@
 
 {% block content %}
     <main>
-        <section id="list">
             <h2>{{ category }}</h2>
-            <ul>
-                {% set new = namespace(p=0) %}
-                {% for article in articles_page.object_list %}
-                    {% set period = article.date | strftime('%Y') %}
-                    {% if period != new.p %}
-                        <h3>{{ period }}</h3>
-                        <li>
-                            <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
-                            <time>{{ article.date|strftime('%b %Y') }}</time>
-                        </li>
-                        {% set new.p = article.date | strftime('%Y') %}
-                    {% elif period == new.p %}
-                        <li>
-                            <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
-                            <time>{{ article.date|strftime('%b %Y') }}</time>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </section>
+            {% if category.name == 'Research highlight' %} 
+                     <div class="archive">
+                    {% for article in articles_page.object_list %}
+                         <article>
+                        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+                        <p>
+                            {{ article.summary }}
+                            <a href="{{ SITEURL }}/{{ article.url }}"><em>Read more...</em></a>
+                        </p>
+                       </article>
+                     {% endfor %}
+                     </div>
+
+
+            {% elif category.name == 'Press' %} 
+                     <div class="press">
+                    {% for article in articles_page.object_list %}
+                         <article>
+                        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+                        <p>
+                            {{ article.summary }}
+                            <a href="{{ SITEURL }}/{{ article.url }}"><em>Read more...</em></a>
+                        </p>
+                       </article>
+                     {% endfor %}
+                     </div>
+
+
+            {% else %}
+                <section id="list">
+                <ul>
+                    {% set new = namespace(p=0) %}
+                    {% for article in articles_page.object_list %}
+                        {% set period = article.date | strftime('%Y') %}
+                        {% if period != new.p %}
+                            <h3>{{ period }}</h3>
+                            <li>
+                                <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+                                <time>{{ article.date|strftime('%b %Y') }}</time>
+                            </li>
+                            {% set new.p = article.date | strftime('%Y') %}
+                        {% elif period == new.p %}
+                            <li>
+                                <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
+                                <time>{{ article.date|strftime('%b %Y') }}</time>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                </section>
+            {% endif %}
         {% if articles_page.has_other_pages() %}
             {% include 'pagination.html' %}
         {% endif %}
