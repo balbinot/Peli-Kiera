@@ -20,9 +20,13 @@
 
 
             {% elif category.name == 'Press' %} 
-                     <div class="press">
+                     <div class="archive">
                     {% for article in articles_page.object_list %}
                          <article>
+
+                        {% if article.cover %}
+                            <img src="{{ article.cover }}" alt="", class="float-right">
+                        {% endif %}
                         <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a>
                         <p>
                             {{ article.summary }}
